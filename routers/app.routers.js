@@ -1,22 +1,33 @@
-const express = require('express')
-const rutasProductos = require('./productos/productos.routes')
-const rutasLogin = require('./login/login.routes')
+const path = require('path');
+const express = require('express');
+const apiRoutes = require('./api/api.routes');
+const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
 
-// Middlewares
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+//Routes
+router.use('/api', apiRoutes);
 
-// Rutas
-router.use('/', rutasLogin)
-router.use('/api/productos', rutasProductos);
-router.use('/api/*', (req, res) => {
-  res.status(404).json({
-    error: -2,
-    descripcion: `La ruta ${req.baseUrl} con el metodo ${req.method} no esta implementado`,
-  });
+router.get('/', (req, res) => {
+  const user = req.user;
+  if (user) {
+    return res.redirect('/profile');
+  }
+  else {
+    return res.sendFile(path.resolve(__dirname, '../public/login.html'));
+  }
+});
+
+router.get('/profile', auth, async (req, res) => {
+  const user = req.user;
+  res.render('profile', { sessionUser: user });
+});
+
+router.get('/logout', auth, (req, res, next) => {
+  req.logOut();
+  console.log('User logued out');
+  res.redirect('/');
 });
 
 module.exports = router;
