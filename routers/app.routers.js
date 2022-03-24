@@ -2,12 +2,15 @@ const path = require('path');
 const express = require('express');
 const apiRoutes = require('./api/api.routes');
 const auth = require('../middlewares/auth');
+const infoRoute = require('./info/info.routes')
 
 const router = express.Router();
 
 
 //Routes
 router.use('/api', apiRoutes);
+
+router.get('/info', infoRoute)
 
 router.get('/', (req, res) => {
   const user = req.user;

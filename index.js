@@ -7,8 +7,10 @@ const passport = require('./middlewares/passport');
 const env = require('./env.config');
 const dbConfig = require('./db/config');
 const apisRoutes = require('./routers/app.routers');
+const minimist = require('minimist')
 
-const PORT = 8080;
+const PORT = { default: { port: 3000 }, alias : { p: 'port'}}
+const args = minimist(process.argv.splice(2), PORT)
 
 const app = express();
 
@@ -35,10 +37,10 @@ app.set('view engine', 'ejs');
 // Routes
 app.use(apisRoutes);
 
-app.listen(PORT, async () => {
+app.listen(args.p, async () => {
   mongoose.connect(dbConfig.mongodb.connectTo('ecommerce'))
   .then(() => {
     console.log('Connected to DB!');
-    console.log('Server is up and running on port: ', +PORT);
+    console.log('Server is up and running on port: ', +args.p);
   });
 });
