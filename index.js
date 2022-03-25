@@ -3,14 +3,12 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const passport = require('./middlewares/passport');
+const args = require('./utils/args.utils')
 
 const env = require('./env.config');
 const dbConfig = require('./db/config');
 const apisRoutes = require('./routers/app.routers');
-const minimist = require('minimist')
 
-const PORT = { default: { port: 3000 }, alias : { p: 'port'}}
-const args = minimist(process.argv.splice(2), PORT)
 
 const app = express();
 

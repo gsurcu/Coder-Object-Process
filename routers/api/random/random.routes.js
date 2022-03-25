@@ -1,21 +1,21 @@
 
 const randomNumber = (cant = 10e7) => {
-  const arr = []
+  const arr = {}
   for (let i = 0; i < cant; i++) {
-    const num = Math.floor((1000)*(Math.random()));
+    // 1 - 1000
+    const num = Math.floor((1000)*(Math.random())+1); 
     if (arr[num] >= 1) {
-      arr[num] = arr[num] + 1;
-      // console.log(arr[num])
+      arr[num]++;
     } else {
       arr[num] = 1
-    }
-    
+    }    
   }
-  console.log(cant)
+  console.log(arr)
   return arr
 }
 process.on('message', (data) => {
-  const cant = isNaN(data)? undefined : data
+  console.log(data.cant,2)
+  const cant = isNaN(data.cant)? undefined : Number(data.cant)
   const arr = randomNumber(cant);
   process.send(arr);
 })

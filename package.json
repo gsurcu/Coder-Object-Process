@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node .",
     "dev": "nodemon .",
-    "dev-1": "nodemon . -p 8080"
+    "dev-1": "nodemon . -p 3000"
   },
   "keywords": [],
   "author": "",
